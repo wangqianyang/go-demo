@@ -6,9 +6,9 @@ import (
 )
 
 type Goods struct {
-	ID    string
-	Name  string
-	Stock int
+	ID    string	`json:"id"`
+	Name  string	`json:"name"`
+	Stock int		`json: stock`
 }
 
 func connect(cName string) (*mgo.Session, *mgo.Collection) {
@@ -45,10 +45,10 @@ func (a Goods) findAll() ([]Goods, error) {
 /**
 根据id查找数据
 */
-func (a *Goods) find(id string) error {
+func (a *Goods) find() error {
 	s, c := connect("goods")
 	defer s.Close()
-	return c.Find(bson.M{"id": id}).One(&a)
+	return c.Find(bson.M{"id": a.ID}).One(&a)
 }
 
 /**
@@ -67,7 +67,7 @@ func (a *Goods) update() error {
 	s, c := connect("goods")
 	defer s.Close()
 	c.Update(bson.M{"id": a.ID}, a)
-	return a.find(a.ID)
+	return a.find()
 }
 
 

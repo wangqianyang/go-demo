@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	//"goji.io/pat"
 	"gopkg.in/mgo.v2"
 	"log"
-	"goji.io/pat"
 	"net/http"
 )
 
@@ -54,9 +54,14 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 func findHandler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println("mongodb search something")
 
-	id := pat.Param(r, "id")
 	var good Goods
-	err := good.find(id)
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&good)
+	if err != nil {
+		ErrorWithJSON(w, "Incorrect body", http.StatusBadRequest)
+		return
+	}
+	err = good.find()
 
 	if err != nil {
 		ErrorWithJSON(w, "Database error", http.StatusInternalServerError)
@@ -103,7 +108,7 @@ func updateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 
 }
 
@@ -131,7 +136,7 @@ func deleteHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 
 
 }

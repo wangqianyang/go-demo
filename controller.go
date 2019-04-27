@@ -3,8 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	//"goji.io/pat"
-	"gopkg.in/mgo.v2"
+		"gopkg.in/mgo.v2"
 	"log"
 	"net/http"
 )

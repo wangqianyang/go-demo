@@ -2,53 +2,26 @@ package main
 
 import (
 	"fmt"
-	"reflect"
+	"net/http"
 )
 
-type controllerInfo struct {
-	url            string
-	controllerType reflect.Type
-}
-
-type ControllerRegistor struct {
-	routers []*controllerInfo
-}
-
-type ControllerInterface interface {
-	Do()
-}
-
-type DefaultController struct {
-}
-
-type AddController struct {
-}
-
-type DeleteController struct {
-}
-
-type UpdateController struct {
-}
-
-type SearchController struct {
-}
-
-func (d *DefaultController) Do() {
+func defaultHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in default controller")
 }
 
-func (u *AddController) Do() {
+func addHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Println("mongodb add something")
 }
 
-func (u *DeleteController) Do() {
-	fmt.Println("mongodb delete something")
-}
-
-func (d *SearchController) Do() {
+func searchHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Println("mongodb search something")
 }
 
-func (d *UpdateController) Do() {
+func updateHandler(w http.ResponseWriter, r *http.Request){
 	fmt.Println("mongodb update something")
+}
+
+func deleteHandler(w http.ResponseWriter, r *http.Request){
+	fmt.Println("mongodb delete something")
+
 }

@@ -6,19 +6,13 @@ import (
 
 func main() {
 
-	mux := &ControllerRegistor{}
+	mux := http.NewServeMux()
+	mux.Handle("/", http.HandlerFunc(defaultHandler))
+	mux.Handle("/add", http.Handler(loggingHandler(http.HandlerFunc(addHandler))))
+	mux.Handle("/update", http.Handler(authHandler(http.HandlerFunc(updateHandler))))
+	mux.Handle("/search", http.Handler(loggingHandler(http.Handler(authHandler(http.HandlerFunc(searchHandler))))))
+	mux.HandleFunc("/delete", http.HandlerFunc(deleteHandler))
 
-	mux.Add("/", &DefaultController{})
-	mux.Add("/add", &AddController{})
-	mux.Add("/delete", &DeleteController{})
-	mux.Add("/search", &SearchController{})
-	mux.Add("/update", &UpdateController{})
+	http.ListenAndServe(":8000", mux)
 
-	s := &http.Server{
-		Addr:    ":8001",
-		Handler: mux,
-	}
-
-	s.ListenAndServe()
 }
-
